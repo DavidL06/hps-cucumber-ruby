@@ -56,7 +56,7 @@ jobs:
       run: |
         curl -X POST https://demo-jira.qa.tm4j-server.smartbear.io/rest/atm/1.0/automation/execution/cucumber/DC\?autoCreateTestCases\=true \
         -H "Authorization: Basic ${{ secrets.ZSCALE_SERVER_TOKEN }}" \
-        -F "file=@results.zip"
+        -F "file=@results.zip" \
         -F 'testCycle="{\"name\": \"Test cycle #${{ github.run_id }}\", \"description\": \"Cycle automated to cover the coffee machine scenario\"}";type=application/json'
         
       continue-on-error: true
