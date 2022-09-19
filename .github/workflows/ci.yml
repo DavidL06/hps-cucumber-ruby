@@ -28,6 +28,10 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+        
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
 
     - name: Run Cucumber tests
       run: |
@@ -47,7 +51,7 @@ jobs:
         curl -X POST https://api.zephyrscale.smartbear.com/v2/automations/executions/cucumber\?projectKey\=MYC\&autoCreateTestCases\=true \
         -H 'Authorization: Bearer ${{ secrets.ZSCALE_TOKEN }}' \
         -F 'file=@results.zip' \
-        -F 'testCycle="{\"name\": \"Test cycle #${{ github.run_id }}\", \"description\": \"Cycle automated to cover the coffee machine scenario\"}";type=application/json'
+        -F 'testCycle="{\"name\": \"Test cycle on ${{ steps.date.outputs.date }}\", \"description\": \"Cycle automated to cover the coffee machine scenario\"}";type=application/json'
         
       continue-on-error: true
 
@@ -57,6 +61,6 @@ jobs:
         curl -X POST https://demo-jira.qa.tm4j-server.smartbear.io/rest/atm/1.0/automation/execution/cucumber/DC\?autoCreateTestCases\=true \
         -H "Authorization: Basic ${{ secrets.ZSCALE_SERVER_TOKEN }}" \
         -F "file=@results.zip" \
-        -F 'testCycle="{\"name\": \"Test cycle #${{ github.run_id }}\", \"description\": \"Cycle automated to cover the coffee machine scenario\"}";type=application/json'
+        -F 'testCycle="{\"name\": \"Test cycle on ${{ steps.date.outputs.date }}\", \"description\": \"Cycle automated to cover the coffee machine scenario\"}";type=application/json'
         
       continue-on-error: true
